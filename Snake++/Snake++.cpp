@@ -2,37 +2,10 @@
 //
 
 #include <iostream>
-#include <string>
-
-int drawLine(int size) 
-{
-    std::cout << std::string(size, '_') << "\n";
-
-    return 0;
-}
-
-int drawBord(int size)
-{
-    std::cout << "|" << std::string(size-2, ' ') << "|\n";
-
-    return 0;
-}
-
-int drawBoard(int width, int height)
-{
-    drawLine(width);
-
-    for (int i = 0; i < height; i++)
-    {
-        drawBord(width);
-    }
-    
-    std::cout << "|" << std::string(width-2, '_') << "|\n";
-
-    return 0;
-}
+#include "Game.h"
 
 int main()
 {
-    drawBoard(20,10);
+	Game* game = new Game();
+	game->Start_game();
 }

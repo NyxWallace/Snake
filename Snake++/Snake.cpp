@@ -18,3 +18,13 @@ int Snake::move_to(int pos_x, int pos_y)
 
 	return 0;
 }
+
+int Snake::eat_to(int pos_x, int pos_y)
+{
+	Body* new_head = new Body(pos_x, pos_y);
+	new_head->next = Head;
+	Head->prev = new_head;
+	Head = new_head;
+
+	return 0;
+}
