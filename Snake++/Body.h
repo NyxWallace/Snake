@@ -2,9 +2,10 @@
 class Body
 {
 public:
-	int pos_x, pos_y;
-	Body* next;
-	Body* prev;
+	int PosX, PosY;
+	Body* Next;
+	Body* Prev;
+
 	Body(int x, int y);
 };
 

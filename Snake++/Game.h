@@ -13,17 +13,18 @@
 class Game
 {
 public:
-	int Start_game();
+	int StartGame();
 
 private:
-	void start_main_loop();
-	void clear_screen(char);
-	std::pair<int, int> get_food_position(std::vector<std::vector<int>> matrix);
-	int Draw_menu(int);
-	int Draw_end();
-	int Draw_board(std::vector<std::vector<int>> matrix, std::pair<int, int> food);
-	int menu_option = 1;
-	bool game_over = false;
+	int menuOption = 1;
 	int direction = 77;
+	bool gameOver = false;
+
+	void startMainLoop();
+	void clearScreen(char);
+	int drawMenu(int);
+	int drawEnd();
+	int drawBoard(std::vector<std::vector<int>>, std::pair<int, int>);
+	std::pair<int, int> getFoodPosition(std::vector<std::vector<int>>);
 };
 

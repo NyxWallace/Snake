@@ -8,17 +8,17 @@
 #define ENTER 13
 
 // Game settings
-#define SPEED 2
+#define SPEED 2 // High number = Slower speed
 #define WIDTH 16
 #define HEIGHT 8
 
-int Game::Start_game() 
+int Game::StartGame() 
 {
     int key = 0;
 
     while (true) 
     {
-        Draw_menu(menu_option);
+        drawMenu(menuOption);
 
         key = _getch();
         // Catch scan code. Ref. to https://stackoverflow.com/a/54581468
@@ -30,15 +30,15 @@ int Game::Start_game()
         switch (key)
         {
         case UP:
-            menu_option = 1;
+            menuOption = 1;
             break;
         case DOWN:
-            menu_option = 2;
+            menuOption = 2;
             break;
         case ENTER:
-            if (menu_option == 1)
+            if (menuOption == 1)
                 // Start game
-                start_main_loop();
+                startMainLoop();
             else
                 // Close game
                 exit(0);
@@ -46,32 +46,32 @@ int Game::Start_game()
             break;
         }
 
-        clear_screen(' ');
+        clearScreen(' ');
     }
     
     return 0;
 }
 
-void Game::start_main_loop() 
+void Game::startMainLoop() 
 {
     Snake* snake = new Snake();
-    game_over = false;
+    gameOver = false;
     bool food_eaten = true;
     std::pair <int, int> food;
 
-    while (!game_over) 
+    while (!gameOver) 
     {
-        clear_screen(' ');
+        clearScreen(' ');
 
-        std::vector<std::vector<int>> matrix = snake->get_matrix(WIDTH, HEIGHT);
+        std::vector<std::vector<int>> matrix = snake->GetMatrix(WIDTH, HEIGHT);
 
         if (food_eaten) 
         {
-            food = get_food_position(matrix);
+            food = getFoodPosition(matrix);
             food_eaten = false;
         }
 
-        Draw_board(matrix, food);
+        drawBoard(matrix, food);
 
         for (int i = 0; i < SPEED; ++i) 
         {
@@ -96,8 +96,8 @@ void Game::start_main_loop()
             }
         }
 
-        int snake_x = snake->Head->pos_x;
-        int snake_y = snake->Head->pos_y;
+        int snake_x = snake->Head->PosX;
+        int snake_y = snake->Head->PosY;
 
         switch (direction)
         {
@@ -105,64 +105,64 @@ void Game::start_main_loop()
             if (snake_x + WIDTH == food.first && snake_y + HEIGHT + 1 == food.second) 
             {
                 food_eaten = true;
-                snake->eat_to(0, 1);
+                snake->EatTo(0, 1);
             }
             else
             {
-                snake->move_to(0, 1);
+                snake->MoveTo(0, 1);
             }
             break;
         case DOWN:
             if (snake_x + WIDTH == food.first && snake_y + HEIGHT - 1 == food.second)
             {
                 food_eaten = true;
-                snake->eat_to(0, -1);
+                snake->EatTo(0, -1);
             }
             else
             {
-                snake->move_to(0, -1);
+                snake->MoveTo(0, -1);
             }
             break;
         case LEFT:
             if (snake_x + WIDTH - 1 == food.first && snake_y + HEIGHT == food.second)
             {
                 food_eaten = true;
-                snake->eat_to(-1, 0);
+                snake->EatTo(-1, 0);
             }
             else
             {
-                snake->move_to(-1, 0);
+                snake->MoveTo(-1, 0);
             }
             break;
         case RIGHT:
             if (snake_x + WIDTH + 1 == food.first && snake_y + HEIGHT == food.second)
             {
                 food_eaten = true;
-                snake->eat_to(1, 0);
+                snake->EatTo(1, 0);
             }
             else
             {
-                snake->move_to(1, 0);
+                snake->MoveTo(1, 0);
             }
             break;
         }
 
-        if (snake->Head->pos_x + WIDTH < 0 || snake->Head->pos_x + WIDTH >= WIDTH * 2 || snake->Head->pos_y + HEIGHT < 0 || snake->Head->pos_y + HEIGHT >= HEIGHT * 2)
+        if (snake->Head->PosX + WIDTH < 0 || snake->Head->PosX + WIDTH >= WIDTH * 2 || snake->Head->PosY + HEIGHT < 0 || snake->Head->PosY + HEIGHT >= HEIGHT * 2)
         {
-            game_over = true;
+            gameOver = true;
         }
     }
 
     delete snake;
 
-    clear_screen(' ');
+    clearScreen(' ');
 
-    Draw_end();
+    drawEnd();
 
     system("pause");
 }
 
-std::pair<int, int> Game::get_food_position(std::vector<std::vector<int>> matrix)
+std::pair<int, int> Game::getFoodPosition(std::vector<std::vector<int>> matrix)
 {
     std::vector<std::pair<int, int>> candidates;
 
@@ -184,7 +184,7 @@ std::pair<int, int> Game::get_food_position(std::vector<std::vector<int>> matrix
     return candidates[pos];
 }
 
-void Game::clear_screen(char fill = ' ') 
+void Game::clearScreen(char fill = ' ') 
 {
     COORD tl = { 0,0 };
     CONSOLE_SCREEN_BUFFER_INFO s;
@@ -196,7 +196,7 @@ void Game::clear_screen(char fill = ' ')
     SetConsoleCursorPosition(console, tl);
 }
 
-int Game::Draw_end()
+int Game::drawEnd()
 {
     std::cout << "___________________________________________________\n";
     std::cout << "|                                                  |\n";
@@ -216,7 +216,7 @@ int Game::Draw_end()
     return 0;
 }
 
-int Game::Draw_menu(int option)
+int Game::drawMenu(int option)
 {
     if (option == 1) 
     {
@@ -256,7 +256,7 @@ int Game::Draw_menu(int option)
     return 0;
 }
 
-int Game::Draw_board(std::vector<std::vector<int>> matrix, std::pair<int,int> food)
+int Game::drawBoard(std::vector<std::vector<int>> matrix, std::pair<int,int> food)
 {
     int matrix_width = matrix.size();
     int matrix_height = matrix[0].size();
@@ -279,7 +279,7 @@ int Game::Draw_board(std::vector<std::vector<int>> matrix, std::pair<int,int> fo
             else
             {
                 std::cout << "O";
-                game_over = true;
+                gameOver = true;
             }
         }
         std::cout << "|\n";
@@ -299,7 +299,7 @@ int Game::Draw_board(std::vector<std::vector<int>> matrix, std::pair<int,int> fo
         else
         {
             std::cout << "O";
-            game_over = true;
+            gameOver = true;
         }
     }
     std::cout << "|";
